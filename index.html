@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phần mềm tính giá In TEM & GIẤY - Ba Đình</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            background: #e9ecef;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .input-text:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .result-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .result-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            text-align: center;
+            font-weight: 600;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .status-success {
+            color: #28a745;
+        }
+
+        .status-error {
+            color: #dc3545;
+        }
+
+        .status-info {
+            color: #17a2b8;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .quote-display {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            white-space: pre-line;
+            font-family: monospace;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Phần mềm tính giá In TEM & GIẤY</h1>
+            <p>Ba Đình - Zalo: 0856.334.334</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('tem')">TEM NHÃN</button>
+            <button class="tab-button" onclick="switchTab('giay')">IN GIẤY</button>
+        </div>
+
+        <!-- Tab TEM -->
+        <div id="tem-tab" class="tab-content active">
+            <div class="form-section">
+                <h3>Nhập lệnh báo giá TEM</h3>
+                <input type="text" id="tem-input" class="input-text" placeholder="Nhập mô tả tem (VD: 1000 tem 50x30mm decal giấy oji cán bóng bế thường)" oninput="autoFillTem()">
+            </div>
+
+            <div class="form-section">
+                <h3>Thông số TEM</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>SL tờ in:</label>
+                        <input type="number" id="tem-so-to" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>SL tem:</label>
+                        <input type="number" id="tem-so-luong" value="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Chiều dài (mm):</label>
+                        <input type="number" id="tem-ngang" value="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Chiều rộng (mm):</label>
+                        <input type="number" id="tem-doc" value="0" step="0.1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="tem-tron">
+                        <label for="tem-tron">Tem tròn</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Vật liệu TEM</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại giấy:</label>
+                        <select id="tem-loai-giay">
+                            <option value="">Chọn loại giấy</option>
+                            <option value="Decal giấy Oji 32x40">Decal giấy Oji 32x40</option>
+                            <option value="Decal giấy Oji 32x43">Decal giấy Oji 32x43</option>
+                            <option value="Decal giấy Oji 33x45">Decal giấy Oji 33x45</option>
+                            <option value="Decal giấy Oji 33x48">Decal giấy Oji 33x48</option>
+                            <option value="Decal đế nhám">Decal đế nhám</option>
+                            <option value="Amazon chấm đỏ">Amazon chấm đỏ</option>
+                            <option value="Amazon chấm xanh">Amazon chấm xanh</option>
+                            <option value="Decal Fasson">Decal Fasson</option>
+                            <option value="Decal Kraft">Decal Kraft</option>
+                            <option value="Decal nhựa">Decal nhựa</option>
+                            <option value="Decal PP">Decal PP</option>
+                            <option value="Decal 7 màu">Decal 7 màu</option>
+                            <option value="Decal Trong">Decal Trong</option>
+                            <option value="Decal Gương">Decal Gương</option>
+                            <option value="Vỡ dẻo">Vỡ dẻo</option>
+                            <option value="Vỡ giòn">Vỡ giòn</option>
+                            <option value="Vỡ KoanHao">Vỡ KoanHao</option>
+                            <option value="Decal Bạc">Decal Bạc</option>
+                            <option value="Gương vàng">Gương vàng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại cán:</label>
+                        <select id="tem-can">
+                            <option value="Không cán">Không cán</option>
+                            <option value="Cán BK bóng">Cán BK bóng</option>
+                            <option value="Cán BK mờ">Cán BK mờ</option>
+                            <option value="Cán nhiệt">Cán nhiệt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiền xén (VNĐ):</label>
+                        <input type="number" id="tem-xen" value="30000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại bế:</label>
+                        <select id="tem-be">
+                            <option value="Không gia công">Không gia công</option>
+                            <option value="Bế thường">Bế thường</option>
+                            <option value="Bế tem to">Bế tem to</option>
+                            <option value="Bế khó<1,5cm">Bế khó &lt; 1,5cm</option>
+                            <option value="Kẻ thành phẩm">Kẻ thành phẩm</option>
+                            <option value="Kẻ tem nhỏ 1,5cm">Kẻ tem nhỏ 1,5cm</option>
+                            <option value="Kẻ tem vỡ<1,5cm">Kẻ tem vỡ &lt; 1,5cm</option>
+                            <option value="Xén thành phẩm">Xén thành phẩm</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section" id="tem-result">
+                <h3>Kết quả TEM</h3>
+                <div class="result-row">
+                    <span>Số tờ giấy:</span>
+                    <span id="tem-output">-</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền in:</span>
+                    <span id="tem-tien-in">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền giấy:</span>
+                    <span id="tem-tien-giay">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền bế:</span>
+                    <span id="tem-tien-be">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền cán:</span>
+                    <span id="tem-tien-can">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền xén:</span>
+                    <span id="tem-tien-xen">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>TỔNG:</span>
+                    <span id="tem-tong">0 VNĐ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab GIẤY -->
+        <div id="giay-tab" class="tab-content">
+            <div class="form-section">
+                <h3>Nhập lệnh báo giá GIẤY</h3>
+                <input type="text" id="giay-input" class="input-text" placeholder="Nhập mô tả giấy (VD: 1000 tờ 210x297 C300 cán 2 mặt)" oninput="autoFillGiay()">
+            </div>
+
+            <div class="form-section">
+                <h3>Thông số GIẤY</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Số tờ in:</label>
+                        <input type="number" id="giay-so-to" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng:</label>
+                        <input type="number" id="giay-so-luong" value="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kích thước:</label>
+                        <select id="giay-size-combo" onchange="updateSizeFromCombo()">
+                            <option value="A4">A4</option>
+                            <option value="A3">A3</option>
+                            <option value="A5">A5</option>
+                            <option value="A6">A6</option>
+                            <option value="Khác">Kích thước khác</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>KT ngang (mm):</label>
+                        <input type="number" id="giay-ngang" value="210">
+                    </div>
+                    <div class="form-group">
+                        <label>KT dọc (mm):</label>
+                        <input type="number" id="giay-doc" value="297">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="giay-in" value="1" id="giay-in1">
+                            In 1 mặt
+                        </label>
+                        <label>
+                            <input type="radio" name="giay-in" value="2" id="giay-in2" checked>
+                            In 2 mặt
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Vật liệu GIẤY</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại giấy:</label>
+                        <select id="giay-loai-giay">
+                            <option value="">Chọn loại giấy</option>
+                            <option value="C80">C80</option>
+                            <option value="C100">C100</option>
+                            <option value="C120">C120</option>
+                            <option value="C150">C150</option>
+                            <option value="C200">C200</option>
+                            <option value="C250">C250</option>
+                            <option value="C300">C300</option>
+                            <option value="C300 Pindo">C300 Pindo</option>
+                            <option value="Of80">Of80</option>
+                            <option value="Of100">Of100</option>
+                            <option value="Of120">Of120</option>
+                            <option value="Of140">Of140</option>
+                            <option value="Of200">Of200</option>
+                            <option value="Of250">Of250</option>
+                            <option value="I250">I250</option>
+                            <option value="I300">I300</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại cán:</label>
+                        <select id="giay-can">
+                            <option value="Không cán">Không cán</option>
+                            <option value="Cán 1 mặt">Cán 1 mặt</option>
+                            <option value="Cán 2 mặt">Cán 2 mặt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiền xén (VNĐ):</label>
+                        <input type="number" id="giay-xen" value="30000">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Khổ giấy tùy chỉnh (nếu cần)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Chiều rộng (cm):</label>
+                        <input type="number" id="giay-custom-w" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Chiều dài (cm):</label>
+                        <input type="number" id="giay-custom-h" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section" id="giay-result">
+                <h3>Kết quả GIẤY</h3>
+                <div class="result-row">
+                    <span>Khổ giấy tối ưu:</span>
+                    <span id="giay-kho-toi-uu">-</span>
+                </div>
+                <div class="result-row">
+                    <span>Số bát/tờ:</span>
+                    <span id="giay-so-bat">-</span>
+                </div>
+                <div class="result-row">
+                    <span>Số tờ cần:</span>
+                    <span id="giay-so-to-can">-</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền in:</span>
+                    <span id="giay-tien-in">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền giấy:</span>
+                    <span id="giay-tien-giay">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền cán:</span>
+                    <span id="giay-tien-can">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>Tiền xén:</span>
+                    <span id="giay-tien-xen">0 VNĐ</span>
+                </div>
+                <div class="result-row">
+                    <span>TỔNG:</span>
+                    <span id="giay-tong">0 VNĐ</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="calculateTem()">Tính toán TEM</button>
+            <button class="btn btn-secondary" onclick="calculateGiay()">Tính toán GIẤY</button>
+            <button class="btn btn-warning" onclick="clearTem()">Xóa TEM</button>
+            <button class="btn btn-warning" onclick="clearGiay()">Xóa GIẤY</button>
+            <button class="btn btn-info" onclick="copyQuote()">Copy báo giá</button>
+            <button class="btn btn-info" onclick="openZalo()">Gửi Zalo</button>
+        </div>
+
+        <div class="quote-display" id="quote-display"></div>
+
+        <div class="status-bar">
+            <span id="status" class="status-success">Trạng thái: Sẵn sàng - Chọn tab TEM hoặc GIẤY để bắt đầu</span>
+        </div>
+    </div>
+
+    <script>
+        const priceData = {
+            INDECAL: {
+                1: 3000, 51: 2700, 101: 2500, 201: 2000, 301: 1800, 
+                401: 1600, 501: 1500, 601: 1400, 701: 1300
+            },
+            INGIAY: {
+                1: 2000, 51: 1700, 101: 1500, 201: 1300, 301: 1200, 
+                401: 1100, 501: 1000, 601: 1000, 701: 1000
+            },
+            GIAYDECAL: {
+                "Decal giấy Oji 32x40": 1700,
+                "Decal giấy Oji 32x43": 1700,
+                "Decal giấy Oji 33x45": 1800,
+                "Decal giấy Oji 33x48": 1900,
+                "Decal đế nhám": 1500,
+                "Amazon chấm xanh": 1700,
+                "Amazon chấm đỏ": 1700,
+                "Decal Fasson": 2000,
+                "Decal Kraft": 2000,
+                "Decal nhựa": 3500,
+                "Decal PP": 2800,
+                "Decal 7 màu": 3000,
+                "Decal Trong": 2500,
+                "Decal Gương": 3000,
+                "Vỡ dẻo": 3500,
+                "Vỡ giòn": 3500,
+                "Vỡ KoanHao": 3500,
+                "Decal Bạc": 3500,
+                "Gương vàng": 3500
+            },
+            TIENGIAY: {
+                "C80": 350, "C100": 450, "C120": 500, "C150": 600,
+                "C200": 800, "C250": 1000, "C300": 1150, "C300 Pindo": 1500,
+                "Of80": 350, "Of100": 450, "Of120": 500, "Of140": 600,
+                "Of200": 800, "Of250": 1000, "I250": 1200, "I300": 1500
+            },
+            BETHUONG: {
+                1: 8000, 21: 7000, 41: 6000, 51: 5000, 101: 3500, 151: 3000
+            },
+            BEKHO: {
+                1: 15000, 21: 10000, 41: 8000, 51: 7000, 101: 6000, 151: 5000
+            },
+            BETEMTO: {
+                1: 5000, 21: 4500, 41: 3500, 51: 3000, 101: 2500, 151: 1500
+            },
+            KETP: {
+                1: 5000, 21: 4500, 41: 4000, 51: 3500, 101: 3000, 151: 2500
+            },
+            KETEMNHO: {
+                1: 8000, 21: 7000, 41: 6000, 51: 5000, 101: 3500, 151: 5000
+            }
+        };
+
+        const loaiGiayTem = {
+            'Decal giấy Oji 32x40': [32, 40],
+            'Decal giấy Oji 32x43': [32, 43],
+            'Decal giấy Oji 33x45': [33, 45],
+            'Decal giấy Oji 33x48': [33, 48],
+            'Decal đế nhám': [32, 43],
+            'Amazon chấm đỏ': [32, 43],
+            'Amazon chấm xanh': [32, 43],
+            'Decal Fasson': [32, 43],
+            'Decal Kraft': [32, 43],
+            'Decal nhựa': [32, 43],
+            'Decal PP': [32, 43],
+            'Decal 7 màu': [32, 43],
+            'Decal Trong': [32, 48],
+            'Decal Gương': [26.5, 48],
+            'Vỡ dẻo': [26.5, 48],
+            'Vỡ giòn': [26.5, 48],
+            'Vỡ KoanHao': [26.5, 48],
+            'Decal Bạc': [26.5, 48],
+            'Gương vàng': [26.5, 48]
+        };
+
+        const kichThuocGiay = [
+            {chieu_rong: 26, chieu_dai: 27},
+            {chieu_rong: 27, chieu_dai: 39},
+            {chieu_rong: 32, chieu_dai: 32},
+            {chieu_rong: 32, chieu_dai: 35},
+            {chieu_rong: 32, chieu_dai: 40},
+            {chieu_rong: 32, chieu_dai: 43},
+            {chieu_rong: 32, chieu_dai: 45},
+            {chieu_rong: 32, chieu_dai: 48}
+        ];
+
+        let lastQuote = '';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector('[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+            
+            updateStatus('Đã chuyển sang tab ' + tab.toUpperCase(), 'info');
+        }
+
+        function updateStatus(message, type) {
+            type = type || 'success';
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Trạng thái: ' + message;
+            statusEl.className = 'status-' + type;
+        }
+
+        function vlookup(sheet, soLuong, tenDecal) {
+            const data = priceData[sheet];
+            if (!data) return 0;
+
+            if (tenDecal && data[tenDecal]) {
+                return data[tenDecal];
+            }
+            
+            const quantities = Object.keys(data).map(Number).filter(function(n) { return !isNaN(n); }).sort(function(a, b) { return a - b; });
+            for (let i = quantities.length - 1; i >= 0; i--) {
+                if (soLuong >= quantities[i]) {
+                    return data[quantities[i]];
+                }
+            }
+            return data[quantities[0]] || 0;
+        }
+
+        function lamTronChanHangNghin(so) {
+            if (so <= 10000) {
+                return Math.ceil(so / 500) * 500;
+            } else if (so <= 50000) {
+                return Math.ceil(so / 1000) * 1000;
+            } else {
+                return Math.ceil(so / 5000) * 5000;
+            }
+        }
+
+        function tinhSoTemTrenToIn(kichThuocNgang, kichThuocDoc, chieuRongGiay, chieuDaiGiay, loaiBe) {
+            const kichThuocNgangCm = kichThuocNgang / 10;
+            const kichThuocDocCm = kichThuocDoc / 10;
+            
+            const margin = loaiBe === 'Xén thành phẩm' ? 0.5 : 1;
+            const usableWidth = Math.max(0, chieuRongGiay - 2 * margin);
+            const usableHeight = Math.max(0, chieuDaiGiay - 2 * margin);
+            
+            const gap = ['Bế thường', 'Bế tem to', 'Bế khó<1,5cm'].indexOf(loaiBe) !== -1 ? 0.2 : 0.1;
+
+            function calculateLayout(wTem, hTem, wGiay, hGiay) {
+                if (wTem <= 0 || hTem <= 0) return 0;
+                const cols = Math.max(0, Math.floor((wGiay + gap) / (wTem + gap)));
+                const rows = Math.max(0, Math.floor((hGiay + gap) / (hTem + gap)));
+                return cols * rows;
+            }
+
+            const layouts = [
+                calculateLayout(kichThuocNgangCm, kichThuocDocCm, usableWidth, usableHeight),
+                calculateLayout(kichThuocDocCm, kichThuocNgangCm, usableWidth, usableHeight),
+                calculateLayout(kichThuocNgangCm, kichThuocDocCm, usableHeight, usableWidth),
+                calculateLayout(kichThuocDocCm, kichThuocNgangCm, usableHeight, usableWidth)
+            ];
+            
+            return Math.max.apply(Math, layouts);
+        }
+
+        function tinhChiPhiCanTem(loaiCan, chieuDaiGiay, chieuRongGiay, soToGiay) {
+            if (soToGiay < 50) {
+                const canRates = {
+                    'Cán BK bóng': 2500,
+                    'Cán BK mờ': 3000,
+                    'Cán nhiệt': 2000,
+                    'Không cán': 0
+                };
+                return (canRates[loaiCan] || 0) * soToGiay;
+            } else {
+                const areaRates = {
+                    'Cán nhiệt': 0.5,
+                    'Cán BK bóng': 1.2,
+                    'Cán BK mờ': 1.5,
+                    'Không cán': 0
+                };
+                const rate = areaRates[loaiCan] || 0;
+                return Math.round(chieuDaiGiay * chieuRongGiay * rate * soToGiay);
+            }
+        }
+
+        function tinhSoBat(chieuRongGiay, chieuDaiGiay, kichThuocNgang, kichThuocDoc, khoangCachNgang, khoangCachDoc) {
+            khoangCachNgang = khoangCachNgang || 0;
+            khoangCachDoc = khoangCachDoc || 0;
+            const soTemNgang = Math.floor(chieuRongGiay / (kichThuocNgang + khoangCachNgang));
+            const soTemDoc = Math.floor(chieuDaiGiay / (kichThuocDoc + khoangCachDoc));
+            return soTemNgang * soTemDoc;
+        }
+
+        function tinhSoTrangIn(loaiIn, chieuDaiGiay, chieuRongGiay, soToGiay) {
+            const multiplier = loaiIn === 'In 1 mặt' ? 1 : 2;
+            
+            if (chieuDaiGiay <= 35) {
+                return soToGiay * 1 * multiplier;
+            } else if (chieuDaiGiay <= 48) {
+                return soToGiay * 2 * multiplier;
+            } else if (chieuDaiGiay < 65) {
+                return soToGiay * 3 * multiplier;
+            } else if (chieuDaiGiay < 86) {
+                return soToGiay * 4 * multiplier;
+            } else if (chieuDaiGiay < 109) {
+                return soToGiay * 5 * multiplier;
+            } else {
+                return soToGiay * 5 * multiplier;
+            }
+        }
+
+        function chiPhiInGiay(soTrangIn) {
+            const priceTable = [
+                [1, 50, 2000], [51, 100, 1700], [101, 200, 1500],
+                [201, 300, 1300], [301, 400, 1200], [401, 500, 1100],
+                [501, 600, 1000], [601, 1000, 1000], [1001, 2000, 900],
+                [2001, 3000, 850], [3001, 5000, 800], [5001, 15000, 750],
+                [15001, Infinity, 700]
+            ];
+            
+            for (let i = 0; i < priceTable.length; i++) {
+                const row = priceTable[i];
+                if (soTrangIn >= row[0] && soTrangIn <= row[1]) {
+                    return row[2];
+                }
+            }
+            return 700;
+        }
+
+        function chiPhiInI300(soTrangIn) {
+            const priceTable = [
+                [1, 50, 3000], [51, 100, 2700], [101, 200, 2500],
+                [201, 300, 2000], [301, 400, 1800], [401, 500, 1600],
+                [501, 600, 1500], [601, 700, 1400], [701, 800, 1300],
+                [801, 1000, 1200], [1001, 2000, 1100], [2001, 3000, 1100],
+                [3001, 5000, 1000], [5001, 15000, 1000], [15001, Infinity, 900]
+            ];
+            
+            for (let i = 0; i < priceTable.length; i++) {
+                const row = priceTable[i];
+                if (soTrangIn >= row[0] && soTrangIn <= row[1]) {
+                    return row[2];
+                }
+            }
+            return 900;
+        }
+
+        function tinhChiPhiCanGiay(loaiCan, chieuDaiGiay, chieuRongGiay, soToGiay) {
+            function lamTronBoSo(value, boSo) {
+                return Math.round(value / boSo) * boSo;
+            }
+            
+            let chiPhiCan = 0;
+            if (loaiCan === 'Cán 1 mặt') {
+                chiPhiCan = chieuDaiGiay * chieuRongGiay * 0.5 * soToGiay;
+            } else if (loaiCan === 'Cán 2 mặt') {
+                chiPhiCan = chieuDaiGiay * chieuRongGiay * 0.5 * soToGiay * 2;
+            }
+            
+            return lamTronBoSo(chiPhiCan, 1000);
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('vi-VN').format(num);
+        }
+
+        function autoFillTem() {
+            const inputText = document.getElementById('tem-input').value;
+            if (!inputText) return;
+
+            try {
+                const soLuongTemMatch = inputText.match(/(\d+)\s+tem/i);
+                const kichThuocMatch = inputText.match(/(\d+(?:\.\d+)?)\s*(?:\*|x|×)\s*(\d+(?:\.\d+)?)\s*(cm|mm)/i);
+                
+                if (soLuongTemMatch) {
+                    document.getElementById('tem-so-luong').value = soLuongTemMatch[1];
+                }
+                
+                if (kichThuocMatch) {
+                    let kichThuocNgang = parseFloat(kichThuocMatch[1]);
+                    let kichThuocDoc = parseFloat(kichThuocMatch[2]);
+                    const donVi = kichThuocMatch[3].toLowerCase();
+                    
+                    if (donVi === 'cm') {
+                        kichThuocNgang *= 10;
+                        kichThuocDoc *= 10;
+                    }
+                    
+                    document.getElementById('tem-ngang').value = kichThuocNgang;
+                    document.getElementById('tem-doc').value = kichThuocDoc;
+                }
+
+                const loaiGiayKeys = Object.keys(loaiGiayTem);
+                for (let i = 0; i < loaiGiayKeys.length; i++) {
+                    const key = loaiGiayKeys[i];
+                    const keyWords = key.toLowerCase().split(' ');
+                    for (let j = 0; j < keyWords.length; j++) {
+                        if (keyWords[j].length > 2 && inputText.toLowerCase().indexOf(keyWords[j]) !== -1) {
+                            document.getElementById('tem-loai-giay').value = key;
+                            break;
+                        }
+                    }
+                }
+
+                if (inputText.toLowerCase().indexOf('bóng') !== -1) {
+                    document.getElementById('tem-can').value = 'Cán BK bóng';
+                } else if (inputText.toLowerCase().indexOf('mờ') !== -1) {
+                    document.getElementById('tem-can').value = 'Cán BK mờ';
+                }
+
+                if (inputText.toLowerCase().indexOf('bế thường') !== -1) {
+                    document.getElementById('tem-be').value = 'Bế thường';
+                } else if (inputText.toLowerCase().indexOf('xén') !== -1) {
+                    document.getElementById('tem-be').value = 'Xén thành phẩm';
+                }
+                
+                updateStatus('Đã tự động điền thông tin TEM', 'info');
+            } catch (e) {
+                console.error('Lỗi auto-fill TEM:', e);
+            }
+        }
+
+        function autoFillGiay() {
+            const inputText = document.getElementById('giay-input').value;
+            if (!inputText) return;
+
+            try {
+                const soLuongMatch = inputText.match(/(\d+(?:\.\d+)?)\s*(tờ|t|chiếc|cái|con|c)/i);
+                if (soLuongMatch) {
+                    document.getElementById('giay-so-luong').value = soLuongMatch[1];
+                }
+
+                const sizeMatch = inputText.match(/(\d+(?:\.\d+)?)\s*(?:[*x])\s*(\d+(?:\.\d+)?)\s*(cm|mm)?/i);
+                if (sizeMatch) {
+                    document.getElementById('giay-ngang').value = sizeMatch[1];
+                    document.getElementById('giay-doc').value = sizeMatch[2];
+                }
+
+                const loaiGiayIn = ['C80', 'C100', 'C120', 'C150', 'C200', 'C250', 'C300', 'C300 Pindo', 'Of80', 'Of100', 'Of120', 'Of140', 'Of200', 'Of250', 'I250', 'I300'];
+                for (let i = 0; i < loaiGiayIn.length; i++) {
+                    const key = loaiGiayIn[i];
+                    if (inputText.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+                        document.getElementById('giay-loai-giay').value = key;
+                        break;
+                    }
+                }
+
+                if (inputText.toLowerCase().indexOf('cán 2 mặt') !== -1) {
+                    document.getElementById('giay-can').value = 'Cán 2 mặt';
+                } else if (inputText.toLowerCase().indexOf('cán 1 mặt') !== -1) {
+                    document.getElementById('giay-can').value = 'Cán 1 mặt';
+                }
+                
+                updateStatus('Đã tự động điền thông tin GIẤY', 'info');
+            } catch (e) {
+                console.error('Lỗi auto-fill GIẤY:', e);
+            }
+        }
+
+        function updateSizeFromCombo() {
+            const sizeCombo = document.getElementById('giay-size-combo').value;
+            const sizes = {
+                'A3': {w: 297, h: 420},
+                'A4': {w: 210, h: 297},
+                'A5': {w: 148, h: 210},
+                'A6': {w: 105, h: 148}
+            };
+            
+            if (sizes[sizeCombo]) {
+                document.getElementById('giay-ngang').value = sizes[sizeCombo].w;
+                document.getElementById('giay-doc').value = sizes[sizeCombo].h;
+            }
+        }
+
+        function calculateTem() {
+            try {
+                const kichThuocNgang = parseFloat(document.getElementById('tem-ngang').value) || 0;
+                const kichThuocDoc = parseFloat(document.getElementById('tem-doc').value) || 0;
+                const soLuongTem = parseInt(document.getElementById('tem-so-luong').value) || 0;
+                const soLuongToIn = parseInt(document.getElementById('tem-so-to').value) || 0;
+                const loaiGiayChon = document.getElementById('tem-loai-giay').value;
+                const loaiCan = document.getElementById('tem-can').value;
+                const loaiBe = document.getElementById('tem-be').value;
+                const chiPhiXen = parseFloat(document.getElementById('tem-xen').value) || 0;
+                
+                if (!loaiGiayChon) {
+                    alert('Vui lòng chọn loại giấy!');
+                    return;
+                }
+                
+                if (soLuongTem > 0 && soLuongToIn > 0) {
+                    alert('Vui lòng nhập số lượng tem HOẶC số tờ in, không nhập cả hai!');
+                    return;
+                }
+                
+                if (soLuongTem === 0 && soLuongToIn === 0) {
+                    alert('Vui lòng nhập số lượng tem hoặc số tờ in!');
+                    return;
+                }
+                
+                const kichThuocGiay = loaiGiayTem[loaiGiayChon];
+                const chieuRongGiay = kichThuocGiay[0];
+                const chieuDaiGiay = kichThuocGiay[1];
+                
+                const soTemTrenGiay = tinhSoTemTrenToIn(kichThuocNgang, kichThuocDoc, chieuRongGiay, chieuDaiGiay, loaiBe);
+                
+                let soToGiayCanThiet;
+                if (soLuongTem > 0) {
+                    soToGiayCanThiet = Math.ceil(soLuongTem / soTemTrenGiay) + 1;
+                } else {
+                    soToGiayCanThiet = soLuongToIn;
+                }
+                
+                const giayThuong = ['Decal giấy Oji 32x40', 'Decal giấy Oji 32x43', 'Decal giấy Oji 33x45', 'Decal giấy Oji 33x48', 'Decal đế nhám', 'Decal Fasson', 'Decal Kraft'];
+                let chiPhiIn;
+                if (giayThuong.indexOf(loaiGiayChon) !== -1) {
+                    chiPhiIn = vlookup('INGIAY', soToGiayCanThiet * 2);
+                } else {
+                    chiPhiIn = vlookup('INDECAL', soToGiayCanThiet * 2);
+                }
+                
+                const beMapping = {
+                    'Bế thường': 'BETHUONG',
+                    'Bế khó<1,5cm': 'BEKHO',
+                    'Kẻ tem vỡ<1,5cm': 'KETEMNHO',
+                    'Kẻ tem nhỏ 1,5cm': 'KETEMNHO',
+                    'Kẻ thành phẩm': 'KETP',
+                    'Bế tem to': 'BETEMTO'
+                };
+                
+                let chiPhiBe = 0;
+                const sheetName = beMapping[loaiBe];
+                if (sheetName) {
+                    chiPhiBe = vlookup(sheetName, soToGiayCanThiet);
+                }
+                
+                const chiPhiGiay = vlookup('GIAYDECAL', soToGiayCanThiet, loaiGiayChon);
+                const chiPhiCanTem = tinhChiPhiCanTem(loaiCan, chieuDaiGiay, chieuRongGiay, soToGiayCanThiet);
+                
+                const tongChiPhiIn = chiPhiIn * 2 * soToGiayCanThiet;
+                const tongChiPhiBe = chiPhiBe * soToGiayCanThiet;
+                const tongChiPhiGiay = chiPhiGiay * soToGiayCanThiet;
+                
+                const chiPhiTong = tongChiPhiIn + tongChiPhiBe + tongChiPhiGiay + chiPhiCanTem + chiPhiXen;
+                const chiPhiTongLamTron = lamTronChanHangNghin(chiPhiTong);
+                
+                if (kichThuocNgang > 1 && kichThuocDoc > 1 && soLuongTem > 1) {
+                    document.getElementById('tem-output').textContent = formatNumber(soToGiayCanThiet) + ' tờ, ' + formatNumber(soTemTrenGiay) + ' tem/tờ';
+                } else {
+                    document.getElementById('tem-output').textContent = soToGiayCanThiet + ' tờ';
+                }
+                
+                document.getElementById('tem-tien-in').textContent = formatNumber(tongChiPhiIn) + ' VNĐ';
+                document.getElementById('tem-tien-giay').textContent = formatNumber(tongChiPhiGiay) + ' VNĐ';
+                document.getElementById('tem-tien-be').textContent = formatNumber(tongChiPhiBe) + ' VNĐ';
+                document.getElementById('tem-tien-can').textContent = formatNumber(chiPhiCanTem) + ' VNĐ';
+                document.getElementById('tem-tien-xen').textContent = formatNumber(chiPhiXen) + ' VNĐ';
+                document.getElementById('tem-tong').textContent = formatNumber(chiPhiTongLamTron) + ' VNĐ';
+                
+                const sizeText = kichThuocNgang + ' x ' + kichThuocDoc + ' mm';
+                
+                lastQuote = 'BÁO GIÁ TEM NHÃN\n' +
+                           '==================\n' +
+                           'Loại giấy: ' + loaiGiayChon + '\n' +
+                           'Kích thước: ' + sizeText + '\n' +
+                           'Số lượng: ' + formatNumber(soLuongTem) + ' tem\n' +
+                           'Số tờ in: ' + soToGiayCanThiet + ' tờ\n' +
+                           'Cán: ' + loaiCan + '\n' +
+                           'Bế: ' + loaiBe + '\n' +
+                           '==================\n' +
+                           'TỔNG CHI PHÍ: ' + formatNumber(chiPhiTongLamTron) + ' VNĐ\n' +
+                           '==================\n' +
+                           'Liên hệ: 0856.334.334';
+                
+                updateStatus('Tính toán TEM hoàn thành!', 'success');
+                
+            } catch (error) {
+                const errorMsg = 'Lỗi tính toán TEM: ' + error.message;
+                updateStatus(errorMsg, 'error');
+                alert('Có lỗi xảy ra: ' + errorMsg);
+            }
+        }
+
+        function calculateGiay() {
+            try {
+                const kichThuocNgang = parseFloat(document.getElementById('giay-ngang').value) / 10 || 0;
+                const kichThuocDoc = parseFloat(document.getElementById('giay-doc').value) / 10 || 0;
+                const soLuong = parseInt(document.getElementById('giay-so-luong').value) || 0;
+                const soLuongToIn = parseInt(document.getElementById('giay-so-to').value) || 0;
+                const tenGiay = document.getElementById('giay-loai-giay').value;
+                const loaiCan = document.getElementById('giay-can').value;
+                const tienXen = parseFloat(document.getElementById('giay-xen').value) || 0;
+                const loaiIn = document.getElementById('giay-in1').checked ? 'In 1 mặt' : 'In 2 mặt';
+                
+                const customWidth = parseFloat(document.getElementById('giay-custom-w').value) || 0;
+                const customLength = parseFloat(document.getElementById('giay-custom-h').value) || 0;
+                
+                if (!tenGiay) {
+                    alert('Vui lòng chọn loại giấy!');
+                    return;
+                }
+                
+                if (soLuong > 0 && soLuongToIn > 0) {
+                    alert('Vui lòng nhập số lượng HOẶC số tờ in, không nhập cả hai!');
+                    return;
+                }
+                
+                if (soLuong === 0 && soLuongToIn === 0) {
+                    alert('Vui lòng nhập số lượng hoặc số tờ in!');
+                    return;
+                }
+                
+                let chieuRong, chieuDai, soToGiayCanThiet, soBatMax, khoGiayTotNhat;
+                
+                if (customWidth && customLength) {
+                    chieuRong = customWidth;
+                    chieuDai = customLength;
+                    
+                    const soBatMaxNgang = tinhSoBat(chieuRong, chieuDai, kichThuocNgang, kichThuocDoc, 0, 0);
+                    const soBatMaxDoc = tinhSoBat(chieuRong, chieuDai, kichThuocDoc, kichThuocNgang, 0, 0);
+                    
+                    soBatMax = Math.max(soBatMaxNgang, soBatMaxDoc);
+                    khoGiayTotNhat = {chieu_rong: chieuRong, chieu_dai: chieuDai};
+                    
+                    if (soLuong > 0) {
+                        soToGiayCanThiet = Math.ceil(soLuong / soBatMax);
+                    } else {
+                        soToGiayCanThiet = soLuongToIn;
+                    }
+                    
+                    document.getElementById('giay-kho-toi-uu').textContent = chieuRong + ' x ' + chieuDai + ' cm (tùy chỉnh)';
+                    
+                } else {
+                    soBatMax = 0;
+                    khoGiayTotNhat = null;
+                    
+                    for (let i = 0; i < kichThuocGiay.length; i++) {
+                        const giay = kichThuocGiay[i];
+                        const soBatNgang = tinhSoBat(giay.chieu_rong, giay.chieu_dai, kichThuocNgang, kichThuocDoc, 0, 0);
+                        const soBatDoc = tinhSoBat(giay.chieu_rong, giay.chieu_dai, kichThuocDoc, kichThuocNgang, 0, 0);
+                        
+                        const soBat = Math.max(soBatNgang, soBatDoc);
+                        if (soBat > soBatMax) {
+                            soBatMax = soBat;
+                            khoGiayTotNhat = giay;
+                        }
+                    }
+                    
+                    if (!khoGiayTotNhat) {
+                        alert('Không tìm thấy khổ giấy phù hợp!');
+                        return;
+                    }
+                    
+                    if (soLuong > 0) {
+                        soToGiayCanThiet = Math.ceil(soLuong / soBatMax) + 1;
+                    } else {
+                        soToGiayCanThiet = soLuongToIn;
+                    }
+                        
+                    document.getElementById('giay-kho-toi-uu').textContent = khoGiayTotNhat.chieu_rong + ' x ' + khoGiayTotNhat.chieu_dai + ' cm (tối ưu)';
+                }
+                
+                const soTrangIn = tinhSoTrangIn(loaiIn, khoGiayTotNhat.chieu_dai, khoGiayTotNhat.chieu_rong, soToGiayCanThiet);
+                const giaGiay = vlookup('TIENGIAY', 1, tenGiay);
+                const chiPhiCanGiay = tinhChiPhiCanGiay(loaiCan, khoGiayTotNhat.chieu_dai, khoGiayTotNhat.chieu_rong, soToGiayCanThiet);
+                
+                let chiPhiIn;
+                if (['C300 Pindo', 'I300'].indexOf(tenGiay) !== -1) {
+                    chiPhiIn = chiPhiInI300(soTrangIn);
+                } else {
+                    chiPhiIn = chiPhiInGiay(soTrangIn);
+                }
+                
+                const tongChiPhiIn = chiPhiIn * soTrangIn;
+                const tongChiPhiGiay = giaGiay * soToGiayCanThiet;
+                const chiPhiTong = tongChiPhiIn + tongChiPhiGiay + chiPhiCanGiay + tienXen;
+                const chiPhiTongLamTron = lamTronChanHangNghin(chiPhiTong);
+                
+                document.getElementById('giay-so-bat').textContent = soBatMax + ' bát';
+                document.getElementById('giay-so-to-can').textContent = soToGiayCanThiet + ' tờ';
+                document.getElementById('giay-tien-in').textContent = formatNumber(tongChiPhiIn) + ' VNĐ';
+                document.getElementById('giay-tien-giay').textContent = formatNumber(tongChiPhiGiay) + ' VNĐ';
+                document.getElementById('giay-tien-can').textContent = formatNumber(chiPhiCanGiay) + ' VNĐ';
+                document.getElementById('giay-tien-xen').textContent = formatNumber(tienXen) + ' VNĐ';
+                document.getElementById('giay-tong').textContent = formatNumber(chiPhiTongLamTron) + ' VNĐ';
+                
+                lastQuote = 'BÁO GIÁ IN GIẤY\n' +
+                           '==================\n' +
+                           'Loại giấy: ' + tenGiay + '\n' +
+                           'Kích thước: ' + (kichThuocNgang*10) + ' x ' + (kichThuocDoc*10) + ' mm\n' +
+                           'Số lượng: ' + formatNumber(soLuong) + ' tờ\n' +
+                           'Khổ giấy: ' + khoGiayTotNhat.chieu_rong + ' x ' + khoGiayTotNhat.chieu_dai + ' cm\n' +
+                           loaiIn + '\n' +
+                           'Cán: ' + loaiCan + '\n' +
+                           '==================\n' +
+                           'TỔNG CHI PHÍ: ' + formatNumber(chiPhiTongLamTron) + ' VNĐ\n' +
+                           '==================\n' +
+                           'Liên hệ: 0856.334.334';
+                
+                updateStatus('Tính toán GIẤY hoàn thành!', 'success');
+                
+            } catch (error) {
+                const errorMsg = 'Lỗi tính toán GIẤY: ' + error.message;
+                updateStatus(errorMsg, 'error');
+                alert('Có lỗi xảy ra: ' + errorMsg);
+            }
+        }
+
+        function clearTem() {
+            const temFields = ['tem-input', 'tem-so-to', 'tem-so-luong', 'tem-ngang', 'tem-doc', 'tem-xen'];
+            for (let i = 0; i < temFields.length; i++) {
+                const field = temFields[i];
+                if (field === 'tem-input') {
+                    document.getElementById(field).value = '';
+                } else if (field === 'tem-xen') {
+                    document.getElementById(field).value = '30000';
+                } else {
+                    document.getElementById(field).value = '0';
+                }
+            }
+            
+            document.getElementById('tem-loai-giay').value = '';
+            document.getElementById('tem-can').value = 'Không cán';
+            document.getElementById('tem-be').value = 'Không gia công';
+            document.getElementById('tem-tron').checked = false;
+            
+            const resultFields = ['tem-output', 'tem-tien-in', 'tem-tien-giay', 'tem-tien-be', 'tem-tien-can', 'tem-tien-xen', 'tem-tong'];
+            for (let i = 0; i < resultFields.length; i++) {
+                const field = resultFields[i];
+                if (field === 'tem-output') {
+                    document.getElementById(field).textContent = '-';
+                } else {
+                    document.getElementById(field).textContent = '0 VNĐ';
+                }
+            }
+            
+            updateStatus('Đã xóa dữ liệu TEM', 'info');
+        }
+
+        function clearGiay() {
+            const giayFields = ['giay-input', 'giay-so-to', 'giay-so-luong', 'giay-custom-w', 'giay-custom-h'];
+            for (let i = 0; i < giayFields.length; i++) {
+                const field = giayFields[i];
+                if (['giay-so-to', 'giay-so-luong'].indexOf(field) !== -1) {
+                    document.getElementById(field).value = '0';
+                } else {
+                    document.getElementById(field).value = '';
+                }
+            }
+            
+            document.getElementById('giay-ngang').value = '210';
+            document.getElementById('giay-doc').value = '297';
+            document.getElementById('giay-xen').value = '30000';
+            document.getElementById('giay-size-combo').value = 'A4';
+            document.getElementById('giay-loai-giay').value = '';
+            document.getElementById('giay-can').value = 'Không cán';
+            document.getElementById('giay-in2').checked = true;
+            
+            const resultFields = ['giay-kho-toi-uu', 'giay-so-bat', 'giay-so-to-can'];
+            for (let i = 0; i < resultFields.length; i++) {
+                document.getElementById(resultFields[i]).textContent = '-';
+            }
+            
+            const priceFields = ['giay-tien-in', 'giay-tien-giay', 'giay-tien-can', 'giay-tien-xen', 'giay-tong'];
+            for (let i = 0; i < priceFields.length; i++) {
+                document.getElementById(priceFields[i]).textContent = '0 VNĐ';
+            }
+            
+            updateStatus('Đã xóa dữ liệu GIẤY', 'info');
+        }
+
+        function copyQuote() {
+            if (!lastQuote) {
+                alert('Chưa có báo giá nào để copy. Vui lòng tính toán trước!');
+                return;
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(lastQuote).then(function() {
+                    updateStatus('Đã copy báo giá vào clipboard!', 'success');
+                    
+                    const quoteDisplay = document.getElementById('quote-display');
+                    quoteDisplay.textContent = lastQuote;
+                    quoteDisplay.style.display = 'block';
+                    
+                    setTimeout(function() {
+                        quoteDisplay.style.display = 'none';
+                    }, 5000);
+                    
+                }).catch(function(err) {
+                    alert('Không thể copy báo giá: ' + err.message);
+                });
+            } else {
+                const textArea = document.createElement('textarea');
+                textArea.value = lastQuote;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                updateStatus('Đã copy báo giá vào clipboard!', 'success');
+            }
+        }
+
+        function openZalo() {
+            const zaloUrl = 'https://zalo.me/0856334334';
+            window.open(zaloUrl, '_blank');
+            updateStatus('Đã mở Zalo', 'success');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus('Sẵn sàng - Chọn tab TEM hoặc GIẤY để bắt đầu', 'success');
+        });
+    </script>
+</body>
+</html>
